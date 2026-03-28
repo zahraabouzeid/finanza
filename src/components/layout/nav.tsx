@@ -4,9 +4,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const links = [
-  { href: "/dashboard", label: "Übersicht" },
+  { href: "/dashboard", label: "Ubersicht" },
   { href: "/transactions", label: "Transaktionen" },
-  { href: "/subscriptions", label: "Abonnements" },
+  { href: "/subscriptions", label: "Abos" },
+  { href: "/stats", label: "Stats" },
 ];
 
 export function Nav() {
@@ -35,8 +36,11 @@ export function Nav() {
         })}
       </aside>
 
-      {/* Mobile bottom nav */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 flex border-t border-zinc-800 bg-zinc-950">
+      {/* Mobile bottom nav — pb accounts for iOS home indicator safe area */}
+      <nav
+        className="md:hidden fixed bottom-0 left-0 right-0 z-50 flex border-t border-zinc-800 bg-zinc-950"
+        style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+      >
         {links.map((link) => {
           const active = pathname.startsWith(link.href);
           return (

@@ -30,6 +30,7 @@ export function ManualEntry({ onSaved }: Props) {
   const [counterparty, setCounterparty] = useState("");
   const [category, setCategory] = useState("Sonstiges");
   const [amount, setAmount] = useState("");
+  const [sign, setSign] = useState<"+" | "-">("-");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
 
@@ -45,18 +46,20 @@ export function ManualEntry({ onSaved }: Props) {
     setCounterparty(s.name);
     setCategory(s.category);
     setAmount(String(Math.abs(s.amount)).replace(".", ","));
+    setSign("-"); // subscriptions are always expenses
   }
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
 
-    const parsed = parseFloat(amount.replace(",", "."));
-    if (!counterparty.trim() || isNaN(parsed)) {
+    const abs = parseFloat(amount.replace(",", "."));
+    if (!counterparty.trim() || isNaN(abs) || abs <= 0) {
       setError("Gegenseite und Betrag sind Pflichtfelder.");
       return;
     }
 
+    const parsed = sign === "-" ? -abs : abs;
     const dateObj = new Date(date);
     const month = `${dateObj.getFullYear()}-${String(dateObj.getMonth() + 1).padStart(2, "0")}`;
 
@@ -79,6 +82,7 @@ export function ManualEntry({ onSaved }: Props) {
         setCounterparty("");
         setAmount("");
         setCategory("Sonstiges");
+        setSign("-");
         setOpen(false);
         onSaved();
       } else {
@@ -111,7 +115,6 @@ export function ManualEntry({ onSaved }: Props) {
         </DialogHeader>
 
         <div className="space-y-4">
-          {/* Subscription quick-fill */}
           {subscriptions.length > 0 && (
             <div className="space-y-1.5">
               <p className="text-xs text-zinc-500">Aus Abonnements:</p>
@@ -143,13 +146,26 @@ export function ManualEntry({ onSaved }: Props) {
               </div>
               <div className="space-y-1.5">
                 <Label htmlFor="me-amount">Betrag</Label>
-                <Input
-                  id="me-amount"
-                  value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
-                  placeholder="866,72 oder -50,00"
-                  className="bg-zinc-800 border-zinc-700"
-                />
+                <div className="flex gap-1">
+                  <button
+                    type="button"
+                    onClick={() => setSign((s) => (s === "-" ? "+" : "-"))}
+                    className={`w-8 shrink-0 h-8 flex items-center justify-center rounded border text-sm font-medium transition-colors ${
+                      sign === "-"
+                        ? "border-rose-800 text-rose-400 bg-rose-950/40"
+                        : "border-emerald-800 text-emerald-400 bg-emerald-950/40"
+                    }`}
+                  >
+                    {sign}
+                  </button>
+                  <Input
+                    id="me-amount"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
+                    placeholder="50,00"
+                    className="bg-zinc-800 border-zinc-700"
+                  />
+                </div>
               </div>
             </div>
 
