@@ -25,10 +25,9 @@ export async function POST(req: NextRequest) {
 
     if (isPDF) {
       const arrayBuffer = await file.arrayBuffer();
-      const uint8 = new Uint8Array(arrayBuffer);
-      const { PDFParse } = await import("pdf-parse");
-      const parser = new PDFParse(uint8);
-      const result = await parser.getText();
+      const buffer = Buffer.from(arrayBuffer);
+      const pdfParse = (await import("pdf-parse")).default;
+      const result = await pdfParse(buffer);
 
       transactions = parseAdvanziaText(result.text);
       // KK: ignore positive amounts (payments to the card, not real income)
