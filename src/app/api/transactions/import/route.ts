@@ -74,7 +74,8 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ imported: inserted, skipped, message: msg });
   } catch (error) {
-    console.error(error);
-    return NextResponse.json({ error: "Import fehlgeschlagen" }, { status: 500 });
+    const msg = error instanceof Error ? error.message : String(error);
+    console.error("Import error:", msg);
+    return NextResponse.json({ error: msg }, { status: 500 });
   }
 }
