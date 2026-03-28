@@ -21,9 +21,10 @@ export async function POST(req: NextRequest) {
     let transactions;
 
     if (isPDF) {
-      const buffer = Buffer.from(await file.arrayBuffer());
+      const arrayBuffer = await file.arrayBuffer();
+      const uint8 = new Uint8Array(arrayBuffer);
       const { PDFParse } = await import("pdf-parse");
-      const parser = new PDFParse(buffer);
+      const parser = new PDFParse(uint8);
       const result = await parser.getText();
       const text = result.text;
 
