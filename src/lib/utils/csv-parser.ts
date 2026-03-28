@@ -74,5 +74,5 @@ const CATEGORY_MAP: Record<string, string> = {
 
 function normalizeCategory(raw: string): string {
   const key = raw.toLowerCase().replace(/\s+/g, "");
-  return CATEGORY_MAP[key] ?? raw || "Sonstiges";
+  return CATEGORY_MAP[key] ?? (raw || "Sonstiges");
 }
