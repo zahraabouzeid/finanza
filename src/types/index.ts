@@ -1,5 +1,4 @@
 export type TransactionSource = "credit_card" | "bank";
-export type TransactionType = "income" | "expense";
 
 export interface Transaction {
   _id?: string;
@@ -7,9 +6,9 @@ export interface Transaction {
   counterparty: string;
   description?: string;
   category: string;
-  amount: number; // positive = income, negative = expense
+  amount: number; // positive = income (bank only), negative = expense
   source: TransactionSource;
-  month: string; // "YYYY-MM" for easy querying
+  month: string; // "YYYY-MM"
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -19,7 +18,7 @@ export interface Subscription {
   name: string;
   amount: number; // negative
   paymentMethod: "debit" | "lastschrift" | "credit_card";
-  billingDay?: number; // day of month
+  billingDay?: number;
   active: boolean;
   category: string;
   createdAt?: Date;
@@ -33,12 +32,14 @@ export interface Account {
   updatedAt?: Date;
 }
 
-export interface MonthlyBudget {
+export interface Budget {
   _id?: string;
   month: string; // "YYYY-MM"
-  creditCardSettlementDate: number; // day of month (default 12)
-  savingsTarget: number; // how much to transfer to Tagesgeld
+  incomeTarget: number;
+  expenseTarget: number; // positive number, represents max spending
   notes?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface MonthlySummary {
@@ -51,7 +52,6 @@ export interface MonthlySummary {
   bankTotal: number;
 }
 
-// CSV import from bank (e.g. Wise, N26)
 export interface RawTransaction {
   date: string;
   counterparty: string;

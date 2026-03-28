@@ -1,16 +1,18 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { MonthlySummary } from "@/types";
+import { Budget, MonthlySummary, Subscription } from "@/types";
 import { formatCurrency, getMonthLabel } from "@/lib/utils/calculations";
 import { Separator } from "@/components/ui/separator";
-import { TransferCalculator } from "@/components/dashboard/transfer-calculator";
+import { BudgetPanel } from "@/components/dashboard/budget-panel";
 import { CategoryBreakdown } from "@/components/dashboard/category-breakdown";
 import { MonthPicker } from "@/components/dashboard/month-picker";
+import Link from "next/link";
 
 interface SummaryResponse {
   summary: MonthlySummary;
-  transfer: { keepOnGiro: number; transferToTagesgeld: number };
+  budget: Budget | null;
+  subscriptions: Subscription[];
 }
 
 function getCurrentMonth() {
@@ -35,7 +37,6 @@ export default function DashboardPage() {
   useEffect(() => { load(); }, [load]);
 
   const summary = data?.summary;
-  const transfer = data?.transfer;
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-8 space-y-8">
@@ -78,23 +79,46 @@ export default function DashboardPage() {
 
           <Separator className="bg-zinc-800" />
 
-          {/* Transfer calculator */}
-          {transfer && (
-            <TransferCalculator
-              summary={summary}
-              transfer={transfer}
-              month={month}
-            />
-          )}
+          <BudgetPanel
+            month={month}
+            summary={summary}
+            budget={data?.budget ?? null}
+            onSaved={(saved) => setData((d) => d ? { ...d, budget: saved } : d)}
+          />
 
           <Separator className="bg-zinc-800" />
 
-          {/* Category breakdown */}
           <CategoryBreakdown byCategory={summary.byCategory} />
+
+          {data?.subscriptions && data.subscriptions.filter((s) => s.active).length > 0 && (
+            <>
+              <Separator className="bg-zinc-800" />
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-zinc-300">Abonnements</p>
+                  <p className="text-xs text-zinc-500 mt-0.5">
+                    {data.subscriptions.filter((s) => s.active).length} aktiv
+                  </p>
+                </div>
+                <div className="text-right">
+                  <p className="text-sm font-medium text-rose-400">
+                    {formatCurrency(
+                      data.subscriptions
+                        .filter((s) => s.active)
+                        .reduce((sum, s) => sum + s.amount, 0)
+                    )}
+                  </p>
+                  <Link href="/subscriptions" className="text-xs text-zinc-600 hover:text-zinc-400 transition-colors">
+                    Kalender ansehen
+                  </Link>
+                </div>
+              </div>
+            </>
+          )}
         </>
       ) : (
         <p className="text-sm text-zinc-500">
-          Keine Daten fur diesen Monat. Transaktionen importieren, um zu beginnen.
+          Keine Daten fuer diesen Monat. Transaktionen importieren oder eintragen.
         </p>
       )}
     </div>

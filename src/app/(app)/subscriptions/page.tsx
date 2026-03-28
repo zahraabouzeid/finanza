@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Subscription } from "@/types";
 import { formatCurrency } from "@/lib/utils/calculations";
 import { SubscriptionForm } from "@/components/subscriptions/subscription-form";
+import { BillingCalendar } from "@/components/subscriptions/billing-calendar";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 
@@ -110,6 +111,9 @@ export default function SubscriptionsPage() {
               </div>
             </div>
           )}
+
+          <Separator className="bg-zinc-800" />
+          <BillingCalendar subscriptions={subscriptions} />
         </div>
       )}
     </div>

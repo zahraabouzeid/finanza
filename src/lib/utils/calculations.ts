@@ -1,5 +1,9 @@
 import { Transaction, MonthlySummary, Subscription } from "@/types";
 
+/**
+ * Income = only positive bank transactions (salary, etc.)
+ * Expenses = all KK transactions (negative) + negative bank transactions
+ */
 export function calculateMonthlySummary(
   transactions: Transaction[],
   subscriptions: Subscription[]
@@ -13,9 +17,10 @@ export function calculateMonthlySummary(
   let bankTotal = 0;
 
   for (const t of transactions) {
-    if (t.amount > 0) {
+    const isIncome = t.source === "bank" && t.amount > 0;
+    if (isIncome) {
       totalIncome += t.amount;
-    } else {
+    } else if (t.amount < 0) {
       totalExpenses += t.amount;
     }
 
@@ -25,7 +30,7 @@ export function calculateMonthlySummary(
     else bankTotal += t.amount;
   }
 
-  // Add active subscriptions
+  // Active subscriptions that are not already in transactions (Lastschrift/Debit from bank)
   for (const s of subscriptions) {
     if (!s.active) continue;
     totalExpenses += s.amount;
@@ -45,26 +50,6 @@ export function calculateMonthlySummary(
   };
 }
 
-/**
- * Calculates how much to keep on Giro and how much to transfer to Tagesgeld.
- * Logic:
- * - Keep on Giro: |creditCardTotal| + buffer (default 100€) + upcoming fixed costs
- * - Transfer to Tagesgeld: balance - giroKeep
- */
-export function calculateTransfer(
-  summary: MonthlySummary,
-  buffer: number = 100
-): { keepOnGiro: number; transferToTagesgeld: number } {
-  const creditCardDebt = Math.abs(summary.creditCardTotal);
-  const keepOnGiro = creditCardDebt + buffer;
-  const transferToTagesgeld = Math.max(0, summary.balance - keepOnGiro);
-
-  return {
-    keepOnGiro: Math.round(keepOnGiro * 100) / 100,
-    transferToTagesgeld: Math.round(transferToTagesgeld * 100) / 100,
-  };
-}
-
 export function formatCurrency(amount: number): string {
   return new Intl.NumberFormat("de-DE", {
     style: "currency",
@@ -73,7 +58,7 @@ export function formatCurrency(amount: number): string {
 }
 
 export function getCurrentMonth(): string {
-  return new Date().toISOString().slice(0, 7); // "YYYY-MM"
+  return new Date().toISOString().slice(0, 7);
 }
 
 export function getMonthLabel(month: string): string {

@@ -5,7 +5,7 @@ import { Transaction } from "@/types";
 import { formatCurrency, getMonthLabel } from "@/lib/utils/calculations";
 import { MonthPicker } from "@/components/dashboard/month-picker";
 import { PdfImport } from "@/components/transactions/pdf-import";
-import { Badge } from "@/components/ui/badge";
+import { ManualEntry } from "@/components/transactions/manual-entry";
 import { format } from "date-fns";
 
 function getCurrentMonth() {
@@ -47,7 +47,15 @@ export default function TransactionsPage() {
         <MonthPicker value={month} onChange={setMonth} />
       </div>
 
-      <PdfImport onImported={load} />
+      {/* Import + manual entry */}
+      <div className="space-y-2">
+        <div className="flex items-center gap-2">
+          <div className="flex-1">
+            <PdfImport onImported={load} />
+          </div>
+          <ManualEntry onSaved={load} />
+        </div>
+      </div>
 
       {/* Filter tabs */}
       <div className="flex gap-1 text-sm">
@@ -87,7 +95,7 @@ export default function TransactionsPage() {
         </div>
       ) : transactions.length === 0 ? (
         <p className="text-sm text-zinc-500">
-          Keine Transaktionen. Lade eine PDF-Abrechnung hoch.
+          Keine Transaktionen. PDF importieren oder manuell eintragen.
         </p>
       ) : (
         <div className="divide-y divide-zinc-800">
@@ -98,14 +106,15 @@ export default function TransactionsPage() {
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm text-zinc-200 truncate">{t.counterparty}</p>
-                <p className="text-xs text-zinc-500">{t.category}</p>
+                <p className="text-xs text-zinc-500">
+                  {t.category}
+                  <span className="ml-1.5 text-zinc-700">
+                    {t.source === "credit_card" ? "KK" : "Bank"}
+                  </span>
+                </p>
               </div>
               <div className="flex items-center gap-2 shrink-0">
-                <span
-                  className={`text-sm font-medium tabular-nums ${
-                    t.amount >= 0 ? "text-emerald-400" : "text-rose-400"
-                  }`}
-                >
+                <span className={`text-sm font-medium tabular-nums ${t.amount >= 0 ? "text-emerald-400" : "text-rose-400"}`}>
                   {formatCurrency(t.amount)}
                 </span>
                 <button

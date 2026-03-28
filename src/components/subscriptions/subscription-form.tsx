@@ -137,7 +137,7 @@ export function SubscriptionForm({ onSaved }: Props) {
       <Button
         type="submit"
         disabled={saving}
-        className="w-full bg-zinc-100 text-zinc-900 hover:bg-zinc-200"
+        className="w-full bg-zinc-800 text-zinc-200 hover:bg-zinc-700 border border-zinc-700"
       >
         {saving ? "Speichern..." : "Speichern"}
       </Button>
