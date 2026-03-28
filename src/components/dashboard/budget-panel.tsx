@@ -128,7 +128,7 @@ export function BudgetPanel({ month, summary, budget, onSaved }: Props) {
           )}
         </div>
       ) : (
-        <p className="text-sm text-zinc-600">Noch kein Budget fuer diesen Monat.</p>
+        <p className="text-sm text-zinc-600">Noch kein Budget für diesen Monat.</p>
       )}
     </div>
   );

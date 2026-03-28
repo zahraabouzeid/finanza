@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/db/mongoose";
 import { TransactionModel } from "@/models/Transaction";
 
+export const maxDuration = 30;
+
 export async function GET() {
   try {
     await connectDB();

@@ -44,7 +44,7 @@ export function BillingCalendar({ subscriptions }: Props) {
 
   return (
     <div className="space-y-5">
-      <h2 className="text-sm font-medium text-zinc-300">Abbuchangskalender</h2>
+      <h2 className="text-sm font-medium text-zinc-300">Abbuchungskalender</h2>
 
       {/* Calendar grid */}
       <div>

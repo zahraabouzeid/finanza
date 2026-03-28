@@ -129,7 +129,7 @@ export default function StatsPage() {
 
       {/* Top days of month */}
       <section className="space-y-3">
-        <h2 className="text-sm font-medium text-zinc-300">Ausgaben-starkste Tage im Monat</h2>
+        <h2 className="text-sm font-medium text-zinc-300">Ausgabenstärkste Tage im Monat</h2>
         <div className="space-y-3">
           {data.byDayOfMonth.map(({ day, total }) => (
             <div key={day}>

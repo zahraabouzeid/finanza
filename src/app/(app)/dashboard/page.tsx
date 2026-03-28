@@ -118,7 +118,7 @@ export default function DashboardPage() {
         </>
       ) : (
         <p className="text-sm text-zinc-500">
-          Keine Daten fuer diesen Monat. Transaktionen importieren oder eintragen.
+          Keine Daten für diesen Monat. Transaktionen importieren oder eintragen.
         </p>
       )}
     </div>

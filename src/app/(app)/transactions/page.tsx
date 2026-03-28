@@ -120,7 +120,7 @@ export default function TransactionsPage() {
                 <button
                   onClick={() => t._id && deleteTransaction(t._id)}
                   className="opacity-0 group-hover:opacity-100 text-zinc-600 hover:text-zinc-300 transition-opacity text-xs px-1"
-                  aria-label="Loschen"
+                  aria-label="Löschen"
                 >
                   x
                 </button>

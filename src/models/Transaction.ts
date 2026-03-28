@@ -20,6 +20,7 @@ const TransactionSchema = new Schema<Transaction>(
 
 TransactionSchema.index({ month: 1, source: 1 });
 TransactionSchema.index({ date: -1 });
+TransactionSchema.index({ amount: 1 });
 // Prevent duplicate imports: same date + counterparty + amount + source
 TransactionSchema.index(
   { date: 1, counterparty: 1, amount: 1, source: 1 },

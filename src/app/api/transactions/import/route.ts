@@ -4,6 +4,9 @@ import { TransactionModel } from "@/models/Transaction";
 import { parseTransactionCSV } from "@/lib/utils/csv-parser";
 import { parseAdvanziaText } from "@/lib/utils/advanzia-parser";
 
+export const maxDuration = 30;
+export const dynamic = "force-dynamic";
+
 export async function POST(req: NextRequest) {
   try {
     await connectDB();

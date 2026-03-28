@@ -58,7 +58,7 @@ export default function SubscriptionsPage() {
           <DialogTrigger
             render={
               <button className="text-sm px-3 py-1.5 rounded bg-zinc-800 text-zinc-200 hover:bg-zinc-700 transition-colors">
-                Hinzufugen
+                Hinzufügen
               </button>
             }
           />
@@ -80,7 +80,7 @@ export default function SubscriptionsPage() {
           ))}
         </div>
       ) : subscriptions.length === 0 ? (
-        <p className="text-sm text-zinc-500">Noch keine Abonnements. Fugen Sie Ihre Fixkosten hinzu.</p>
+        <p className="text-sm text-zinc-500">Noch keine Abonnements. Fügen Sie Ihre Fixkosten hinzu.</p>
       ) : (
         <div className="space-y-6">
           {active.length > 0 && (
@@ -151,7 +151,7 @@ function SubscriptionRow({
         <button
           onClick={() => s._id && onDelete(s._id)}
           className="opacity-0 group-hover:opacity-100 text-zinc-600 hover:text-zinc-300 transition-opacity text-xs px-1"
-          aria-label="Loschen"
+          aria-label="Löschen"
         >
           x
         </button>

@@ -133,20 +133,19 @@ export function ManualEntry({ onSaved }: Props) {
           )}
 
           <form onSubmit={submit} className="space-y-3">
-            <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-1.5">
-                <Label htmlFor="me-date">Datum</Label>
-                <Input
-                  id="me-date"
-                  type="date"
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
-                  className="bg-zinc-800 border-zinc-700"
-                />
-              </div>
-              <div className="space-y-1.5">
-                <Label htmlFor="me-amount">Betrag</Label>
-                <div className="flex gap-1">
+            <div className="space-y-1.5">
+              <Label htmlFor="me-date">Datum</Label>
+              <Input
+                id="me-date"
+                type="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                className="bg-zinc-800 border-zinc-700"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="me-amount">Betrag</Label>
+              <div className="flex gap-1">
                   <button
                     type="button"
                     onClick={() => setSign((s) => (s === "-" ? "+" : "-"))}
@@ -166,7 +165,6 @@ export function ManualEntry({ onSaved }: Props) {
                     className="bg-zinc-800 border-zinc-700"
                   />
                 </div>
-              </div>
             </div>
 
             <div className="space-y-1.5">
